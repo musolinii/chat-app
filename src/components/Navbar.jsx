@@ -6,8 +6,11 @@ const Navbar = (props)=>{
         <>
         {room ?
         <>
+        <div className="navbar">
         <h1>Welcome to { room }</h1>
         <Signout />
+        </div>
+        
         </>
         :<h1 className="query">Enter room Name</h1>
         }

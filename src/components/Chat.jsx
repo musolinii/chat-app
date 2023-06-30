@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { addDoc, collection, onSnapshot, query, serverTimestamp , orderBy, limit} from "firebase/firestore";
+import { addDoc, collection, onSnapshot, query, serverTimestamp , orderBy, limit, where} from "firebase/firestore";
 import { auth, db } from "../firebase/firebase-config";
 import Navbar from "./Navbar";
 import TextBar from "./TextBar";
@@ -15,7 +15,7 @@ const Chat = (props) => {
     const messageRef = collection(db, "messages")
 
     useEffect(() =>{
-        const q = query(collection(db, "messages"), orderBy("createdAt"), limit(50));
+        const q = query(messageRef, where("room", "==", room) ,limit(50));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const messages = [];
 
@@ -53,7 +53,7 @@ const Chat = (props) => {
 
     return (
         <>
-            <Navbar room ={room}/>
+            <Navbar room ={room }/>
             <div className="chatbox">
             {messages.map((message)=><ChatMessage  message={message}/>)}
             </div>

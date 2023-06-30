@@ -152,3 +152,12 @@ p {
     border-radius: 30px;
     margin-top: 40px;
 }
+
+.navbar{
+    color: antiquewhite;
+}
+
+.navbar button{
+    border-radius: 30px;
+    background-color: darkcyan;
+}
