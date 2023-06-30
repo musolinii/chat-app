@@ -2,9 +2,11 @@ import { useState, useRef } from "react";
 import Auth from "./components/Auth";
 import Cookies from "universal-cookie";
 import Chat from "./components/Chat";
+import Navbar from "./components/Navbar";
+import './App.css'
 
+export const cookies = new Cookies();
 
-const cookies = new Cookies();
 function App() {
   const [isAuth, setIsAuth] = useState(cookies.get("auth-token"))
   const [room, setRoom] = useState(null)
@@ -18,25 +20,24 @@ function App() {
       
       <Auth />
       
-      <p>hello</p>
-      
       </>
     )
 
   }
 
   return(
-    <>
+    <div className="main-container">
     {room ? 
     <Chat room ={room}/> 
     : 
     <div>
-      <h1>Enter Name</h1>
+      <Navbar room = { room }/>
       <input ref={roomInputRef}/>
       <button onClick={()=> setRoom(roomInputRef.current.value)}>Enter Chat</button>
     </div>}
+    
 
-    </>
+    </div>
   )
 
 

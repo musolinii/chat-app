@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { addDoc, collection, onSnapshot, query, serverTimestamp , orderBy, limit} from "firebase/firestore";
 import { auth, db } from "../firebase/firebase-config";
+import Navbar from "./Navbar";
+import TextBar from "./TextBar";
+import ChatMessage from "./ChatMessage";
 
 const Chat = (props) => {
 
@@ -39,6 +42,8 @@ const Chat = (props) => {
             createdAt: serverTimestamp(),
             user: auth.currentUser.displayName,
             room,
+            dp: auth.currentUser.photoURL,
+            id: auth.currentUser.email,
 
 
         })
@@ -48,12 +53,12 @@ const Chat = (props) => {
 
     return (
         <>
-            <div>{messages.map((message)=><p>{message.user}:{message.text}</p>)}</div>
-
-            <form onSubmit={handleSubmit} onChange={(e) => setNewMessage(e.target.value)}>
-                <input  placeholder="Type your message" />
-                <button type="submit">Send</button>
-            </form>
+            <Navbar room ={room}/>
+            <div className="chatbox">
+            {messages.map((message)=><ChatMessage  message={message}/>)}
+            </div>
+            <TextBar handleSubmit = { handleSubmit } setNewMessage={ setNewMessage }/>
+            
         </>
 
     )

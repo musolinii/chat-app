@@ -21,10 +21,10 @@ const Auth = ()=>{
 
     }
     return(
-        <>
-        <p>Sign in with Google</p>
+        <div className="login">
+        <h1>Sign in with Google</h1>
         <button onClick={signInWithGoogle}>Sign in</button>
-        </>
+        </div>
     )
 }
 
