@@ -9,7 +9,7 @@ const Navbar = (props)=>{
         <h1>Welcome to { room }</h1>
         <Signout />
         </>
-        :<h1>Enter room Name</h1>
+        :<h1 className="query">Enter room Name</h1>
         }
 
         

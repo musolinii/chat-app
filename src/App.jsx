@@ -33,7 +33,7 @@ function App() {
     <div>
       <Navbar room = { room }/>
       <input ref={roomInputRef}/>
-      <button onClick={()=> setRoom(roomInputRef.current.value)}>Enter Chat</button>
+      <button className="btn" onClick={()=> setRoom(roomInputRef.current.value)}>Enter Chat</button>
     </div>}
     
 
