@@ -160,4 +160,5 @@ p {
 .navbar button{
     border-radius: 30px;
     background-color: darkcyan;
+    margin-left: 40px;
 }

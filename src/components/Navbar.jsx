@@ -2,6 +2,10 @@ import Signout from "./Signout";
 
 const Navbar = (props)=>{
     const {room} = props;
+
+    const home = ()=>{
+        window.location.reload(false)
+    }
     return(
         <>
         {room ?
@@ -9,6 +13,7 @@ const Navbar = (props)=>{
         <div className="navbar">
         <h1>Welcome to { room }</h1>
         <Signout />
+        <button onClick={home}>Home</button>
         </div>
         
         </>
