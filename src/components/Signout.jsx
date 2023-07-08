@@ -7,6 +7,7 @@ const Signout = ()=>{
     const signout = async()=>{
         await signOut(auth);
         cookies.remove("auth-token");
+        window.location.reload(false)
 
     }
 

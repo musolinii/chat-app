@@ -11,7 +11,7 @@ const Auth = ()=>{
         try {
             const result = await signInWithPopup(auth, provider);
             cookies.set("auth-token",result.user.refreshToken)
-            
+            window.location.reload(false)
             
         } catch (err) {
             console.error(err)
