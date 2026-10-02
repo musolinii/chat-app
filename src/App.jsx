@@ -1,41 +1,71 @@
-import { useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/firebase-config";
 import Auth from "./components/Auth";
-import Cookies from "universal-cookie";
 import Chat from "./components/Chat";
-import Navbar from "./components/Navbar";
 import './App.css'
 
-export const cookies = new Cookies();
-
 function App() {
-  const [isAuth, setIsAuth] = useState(cookies.get("auth-token"))
+  const [user, setUser] = useState(null)
+  const [authLoading, setAuthLoading] = useState(true)
+  const [roomInput, setRoomInput] = useState("")
   const [room, setRoom] = useState(null)
-  const roomInputRef = useRef(null)
+  const [roomLabel, setRoomLabel] = useState(null)
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
+      setUser(nextUser)
+      setAuthLoading(false)
+      if (!nextUser) {
+        setRoom(null)
+        setRoomLabel(null)
+      }
+    })
+    return unsubscribe
+  }, [])
 
-  if(!isAuth){
+  if (authLoading) {
+    return <div className="loading">Loading...</div>
+  }
 
-    return (
-      <>
-      
-      <Auth />
-      
-      </>
-    )
+  if (!user) {
+    return <Auth />
+  }
 
+  const joinRoom = (e) => {
+    e.preventDefault()
+    const label = roomInput.trim()
+    if (label === "") return
+    setRoom(label.toLowerCase())
+    setRoomLabel(label)
+  }
+
+  const leaveRoom = () => {
+    setRoom(null)
+    setRoomLabel(null)
   }
 
   return(
-    <div className="main-container">
-    {room ? 
-    <Chat room ={room}/> 
-    : 
-    <div>
-      <Navbar room = { room }/>
-      <input ref={roomInputRef}/>
-      <button className="btn" onClick={()=> setRoom(roomInputRef.current.value)}>Enter Chat</button>
+    <div className="app-shell">
+    {room ?
+    <Chat room ={room} roomLabel ={roomLabel} currentUser ={user} onLeaveRoom ={leaveRoom}/>
+    :
+    <div className="room">
+      <form className="room__card" onSubmit={joinRoom}>
+      <h1 className="room__title">Join a room</h1>
+      <div className="room__row">
+        <input
+          className="room__input"
+          placeholder="Room name"
+          value={roomInput}
+          onChange={(e) => setRoomInput(e.target.value)}
+          aria-label="Room name"
+        />
+        <button className="btn btn--primary" type="submit">Enter Chat</button>
+      </div>
+      </form>
     </div>}
-    
+
 
     </div>
   )

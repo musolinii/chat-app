@@ -1,0 +1,29 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(senderEmail) {
+      return senderEmail == request.auth.token.email;
+    }
+
+    match /messages/{messageId} {
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn()
+        && isSelf(request.resource.data.senderEmail)
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 2000
+        && request.resource.data.room is string
+        && request.resource.data.room.size() > 0
+        && request.resource.data.room.size() <= 100;
+
+      allow update, delete: if false;
+    }
+  }
+}

@@ -1,29 +1,25 @@
+import PropTypes from "prop-types";
 import Signout from "./Signout";
 
 const Navbar = (props)=>{
-    const {room} = props;
+    const {roomLabel, onLeaveRoom} = props;
 
-    const home = ()=>{
-        window.location.reload(false)
-    }
+    if (!roomLabel) return null;
+
     return(
-        <>
-        {room ?
-        <>
-        <div className="navbar">
-        <h1>Welcome to { room }</h1>
+        <header className="navbar">
+        <h1 className="navbar__title">{ roomLabel }</h1>
+        <div className="navbar__actions">
         <Signout />
-        <button onClick={home}>Home</button>
+        <button className="btn" onClick={onLeaveRoom}>Leave room</button>
         </div>
-        
-        </>
-        :<h1 className="query">Enter room Name</h1>
-        }
-
-        
-       
-        </>
-        
+        </header>
     )
 }
+
+Navbar.propTypes = {
+    roomLabel: PropTypes.string,
+    onLeaveRoom: PropTypes.func,
+}
+
 export default Navbar;
